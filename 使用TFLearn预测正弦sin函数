@@ -92,8 +92,4 @@ plot_predicted, = plt.plot(predicted, label='predicted')
 plot_test, = plt.plot(test_y, label='real_sin')
 plt.legend([plot_predicted, plot_test], ['predicted', 'real_sin'])
 plt.show()
---------------------- 
-作者：widiot8023 
-来源：CSDN 
-原文：https://blog.csdn.net/white_idiot/article/details/78882856 
-版权声明：本文为博主原创文章，转载请附上博文链接！
+
