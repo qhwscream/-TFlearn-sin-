@@ -53,11 +53,7 @@ x_ = tf.unpack(x, axis=1)
 
 # 修改为
 x_ = tf.unstack(x, axis=1)
-1
-2
-3
-4
-5
+
 2. 没有 rnn_cell
 出现如下错误
 
@@ -72,13 +68,7 @@ lstm_cell = tf.nn.rnn_cell.BasicLSTMCell(HIDDEN_SIZE)
 # 修改为
 lstm_cell = tf.contrib.rnn.BasicLSTMCell(HIDDEN_SIZE)
     cell = tf.contrib.rnn.MultiRNNCell([lstm_cell] * NUM_LAYERS)
-1
-2
-3
-4
-5
-6
-7
+
 3. rnn 不可调用
 出现如下错误
 
@@ -90,10 +80,7 @@ tf.contrib.rnn.static_rnn
 tf.contrib.rnn.static_state_saving_rnn
 tf.contrib.rnn.static_bidirectional_rnn
 tf.contrib.rnn.stack_bidirectional_dynamic_rnn
-1
-2
-3
-4
+
 而我们需要的是 tf.nn.dynamic_rnn() 方法
 
 # 原代码
@@ -101,11 +88,7 @@ output, _ = tf.nn.rnn(cell, X, dtype=tf.float32)
 
 # 修改为
 output, _ = tf.nn.dynamic_rnn(cell, X, dtype=tf.float32)
-1
-2
-3
-4
-5
+
 4. 不能调用 Estimator.fit
 出现如下警告
 
@@ -119,12 +102,7 @@ separate class SKCompat. Arguments x, y and batch_size are only
 available in the SKCompat class, Estimator will only accept input_fn.
 Example conversion:
   est = Estimator(...) -> est = SKCompat(Estimator(...))
-1
-2
-3
-4
-5
-6
+
 按照给出的方法修改代码
 
 # 原代码
@@ -134,13 +112,7 @@ regressor = learn.Estimator(model_fn=lstm_model)
 from tensorflow.contrib.learn.python.learn.estimators.estimator import SKCompat
 
 regressor = SKCompat(learn.Estimator(model_fn=lstm_model))
-1
-2
-3
-4
-5
-6
-7
+
 5. 临时文件夹
 出现如下警告
 
@@ -154,12 +126,7 @@ regressor = SKCompat(learn.Estimator(model_fn=lstm_model))
 # 修改为
 regressor = SKCompat(
     learn.Estimator(model_fn=lstm_model, model_dir='model/'))
-1
-2
-3
-4
-5
-6
+
 6. 尺寸必须一致
 出现如下错误
 
@@ -184,24 +151,13 @@ def lstm_model(X, y):
     # 将多层LSTM结构连接成RNN网络并计算前向传播结果
     output, _ = tf.nn.dynamic_rnn(cell, X, dtype=tf.float32)
     ......
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
+
 7. Legend 不支持
 出现如下错误
 
 UserWarning: Legend does not support [<matplotlib.lines.Line2D object at 0x7feb52d58c18>] instances.
 A proxy artist may be used instead.
-1
-2
+
 原因是因为需要在调用 plt.plot 时参数解包
 
 # 原代码
@@ -211,13 +167,7 @@ plot_test = plt.plot(test_y, label='real_sin')
 # 修改为（加逗号）
 plot_predicted, = plt.plot(predicted, label='predicted')
 plot_test, = plt.plot(test_y, label='real_sin')
-1
-2
-3
-4
-5
-6
-7
+
 8. 使用 plt.show() 不显示图片
 在代码中使用 plt.show() 运行之后没有图片显示，原因是原代码中使用了 mpl.use(‘Agg’)，而 Agg 是不会画图的，所以直接把这一行删掉
 
@@ -227,15 +177,12 @@ plot_test, = plt.plot(test_y, label='real_sin')
 WARNING:tensorflow:From train.py:60: get_global_step 
 (from tensorflow.contrib.framework.python.ops.variables) 
 is deprecated and will be removed in a future version.
-1
-2
-3
+
 警告下面给出了解决方法
 
 Instructions for updating:
 Please switch to tf.train.get_global_step
-1
-2
+
 按照解决方法修改代码
 
 # 原代码
